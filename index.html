@@ -1,0 +1,186 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Report Submission</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background: linear-gradient(to right, #ff758c, #ff7eb3);
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease-in-out;
+        }
+        h1 {
+            color: #6a0572;
+            font-size: 32px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        label {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+        input:focus, select:focus, textarea:focus {
+            border-color: #d16ba5;
+            box-shadow: 0 0 10px rgba(209, 107, 165, 0.5);
+        }
+        button {
+            background: #d16ba5;
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: bold;
+            transition: all 0.3s ease-in-out;
+        }
+        button:hover {
+            background: #a4508b;
+            transform: scale(1.05);
+        }
+        #preview {
+            margin-top: 30px;
+            padding: 20px;
+            border: 3px solid #ddd;
+            background: #fff;
+            border-radius: 8px;
+            font-size: 20px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+    </style>
+    <script>
+        function previewReport() {
+            const name = document.getElementById("name").value;
+            const week = document.getElementById("week").value;
+            const tasks = document.getElementById("tasks").value;
+            const learnings = document.getElementById("learnings").value;
+            const challenges = document.getElementById("challenges").value;
+            const plan = document.getElementById("plan").value;
+
+            if (!name || !week || !tasks || !learnings || !challenges || !plan) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            const preview = `
+                <h2>Report Preview</h2>
+                <p><strong>Name:</strong> ${name}</p>
+                <p><strong>Week Number:</strong> ${week}</p>
+                <p><strong>Tasks Performed:</strong> ${tasks}</p>
+                <p><strong>Key Learnings:</strong> ${learnings}</p>
+                <p><strong>Challenges Faced:</strong> ${challenges}</p>
+                <p><strong>Plan for Next Week:</strong> ${plan}</p>
+            `;
+            document.getElementById("preview").innerHTML = preview;
+        }
+
+        function downloadReport() {
+            const name = document.getElementById("name").value;
+            const week = document.getElementById("week").value;
+            const tasks = document.getElementById("tasks").value;
+            const learnings = document.getElementById("learnings").value;
+            const challenges = document.getElementById("challenges").value;
+            const plan = document.getElementById("plan").value;
+
+            if (!name || !week || !tasks || !learnings || !challenges || !plan) {
+                alert("Please fill in all fields before downloading.");
+                return;
+            }
+
+            const reportContent = `
+Name: ${name}
+Week Number: ${week}
+Tasks Performed: ${tasks}
+Key Learnings: ${learnings}
+Challenges Faced: ${challenges}
+Plan for Next Week: ${plan}
+            `;
+            
+            const blob = new Blob([reportContent], { type: "text/plain" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "Weekly_Report.txt";
+            link.click();
+        }
+
+        function printReport() {
+            const previewContent = document.getElementById("preview").innerHTML;
+            if (!previewContent) {
+                alert("Please submit the report first.");
+                return;
+            }
+            const printWindow = window.open('', '', 'width=800,height=600');
+            printWindow.document.write('<html><head><title>Print Report</title></head><body>');
+            printWindow.document.write(previewContent);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.print();
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Weekly Report Submission</h1>
+        <form id="reportForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" required>
+
+            <label for="week">Week Number:</label>
+            <select id="week" required>
+                <option value="">Select Week</option>
+                <option value="Week 1">Week 1</option>
+                <option value="Week 2">Week 2</option>
+                <option value="Week 3">Week 3</option>
+                <option value="Week 4">Week 4</option>
+            </select>
+
+            <label for="tasks">Tasks Performed:</label>
+            <textarea id="tasks" required></textarea>
+
+            <label for="learnings">Key Learnings:</label>
+            <textarea id="learnings" required></textarea>
+
+            <label for="challenges">Challenges Faced:</label>
+            <textarea id="challenges" required></textarea>
+
+            <label for="plan">Plan for Next Week:</label>
+            <textarea id="plan" required></textarea>
+
+            <button type="button" onclick="previewReport()">Submit</button>
+            <button type="button" onclick="downloadReport()">Download</button>
+            <button type="button" onclick="printReport()">Print</button>
+        </form>
+
+        <div id="preview"></div>
+    </div>
+</body>
+</html>
